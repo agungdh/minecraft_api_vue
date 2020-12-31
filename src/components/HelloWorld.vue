@@ -16,11 +16,14 @@
       :headers="headers"
       :items="players"
       :search="search"
+      :loading="isLoading"
     ></v-data-table>
   </v-card>
 </template>
 
 <script>
+  import axios from 'axios'
+
   export default {
     name: 'HelloWorld',
     data () {
@@ -35,13 +38,38 @@
           },
           { text: 'Nama', value: 'nama' },
         ],
-        players: [
-          {
-            no: 1,
-            nama: 'AgungDH'
-          },
-        ],
+        players: [],
+        isLoading: false,
       }
     },
+    methods: {
+      getData: function() {
+        var that = this;
+
+        this.isLoading = true;
+
+        axios.get('https://minecraft-api.serbaonline.id/minecraft/getPlayersData')
+        .then(function (response) {
+          that.players = [];
+
+          if (response.data != false) {
+            var noNow = 1;
+            response.data.forEach(function(item, index, arr) {
+              that.players.push({no: noNow, nama: item});
+              
+              noNow++;
+            })
+          }
+
+          that.isLoading = false;
+        })
+        .catch(function () {
+          console.log('Error happened...');
+        });
+      }
+    },
+    mounted: function() {
+      setInterval(this.getData, 5000);
+    }
   }
 </script>

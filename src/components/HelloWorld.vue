@@ -23,6 +23,7 @@
 
 <script>
   import axios from 'axios'
+  import Swal from 'sweetalert2'
 
   export default {
     name: 'HelloWorld',
@@ -63,8 +64,25 @@
 
           that.isLoading = false;
         })
-        .catch(function () {
-          console.log('Error happened...');
+        .catch(function (error) {
+          if (error.response) {
+            // Request made and server responded
+            console.log(error.response.data);
+            console.log(error.response.status);
+            console.log(error.response.headers);
+          } else if (error.request) {
+            // The request was made but no response was received
+            console.log(error.request);
+          } else {
+            // Something happened in setting up the request that triggered an Error
+            console.log('Error', error.message);
+          }
+
+          Swal.fire(
+            'ERROR !!!',
+            error.message,
+            'error'
+          );
         });
       }
     },

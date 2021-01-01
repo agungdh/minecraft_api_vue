@@ -87,7 +87,7 @@
       }
     },
     mounted: function() {
-      setInterval(this.getData, 5000);
+      setInterval(this.getData, 60000);
     }
   }
 </script>

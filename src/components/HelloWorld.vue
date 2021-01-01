@@ -88,6 +88,8 @@
     },
     mounted: function() {
       setInterval(this.getData, 60000);
+      
+      this.getData();
     }
   }
 </script>
